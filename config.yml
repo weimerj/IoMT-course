@@ -1,0 +1,5 @@
+credentials:
+  username: "student"
+  password: "password"
+  database: "thingsboard"
+  host: "iomt1.isis.vanderbilt.edu"
