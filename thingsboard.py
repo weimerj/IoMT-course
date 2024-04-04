@@ -1,43 +1,19 @@
+from torch.utils.data import Dataset
+import numpy as np
+import pandas as pd
+import sys
+import os
+from pathlib import Path
+import yaml
+
+sys.path.append(os.path.join(Path(__file__).parents[2]))
+
+with open(os.path.join(Path(__file__).parents[0], "config.yml"), 'r') as f:
+    config = yaml.safe_load(f)
 
 class IoMTData(Dataset):
-    def __init__(self, mr=default_monitoring_rate_milliseconds,
-                 tr=default_test_rate_milliseconds, tw=default_test_window_milliseconds,
+    def __init__(self,
                  num_samples=None, subject_ids=[]):
-
-        if not isinstance(mr, int):
-            raise(TypeError, "mr (monitoring rate) must be an int: received {}".format(type(mr)))
-
-        if not isinstance(tr, int):
-            raise (TypeError, "tr (monitoring rate) must be an int: received {}".format(type(tr)))
-
-        if not isinstance(tw, int):
-            raise (TypeError, "tw (monitoring rate) must be an int: received {}".format(type(tw)))
-
-        self.mr, self.tr, self.tw = mr, tr, tw
-
-        self.pool_obj = mp.Pool(mp.cpu_count())
-
-        with open(master_path) as f:
-            df = pandas.read_csv(f)
-        #data = df.to_dict(orient='records')
-
-        self.meta = []
-        for x in df.to_dict(orient='records'):
-            if (x['record_id'] not in skip_subjects) and (x['jimignore'] != 1):
-                if len(subject_ids) == 0:
-                    self.meta = convert_meta(x, self.meta)
-                elif "{}".format(x['record_id']).zfill(3) in subject_ids:
-                    self.meta = convert_meta(x, self.meta)
-
-        print("{} records loaded".format(len(self.meta)))
-
-        if num_samples is not None:
-            n_subjects = len(self.meta)
-            self.subject_num = np.random.randint(0, n_subjects, int(num_samples))
-            self.end_per = np.random.rand(int(num_samples))
-        else:
-            self.subject_num = None
-            self.end_per = None
 
 
         #self.server = SSHTunnelForwarder(
